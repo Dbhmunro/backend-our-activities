@@ -17,5 +17,19 @@ class ActivityUsersController < ApplicationController
     end
 
     def create
+        activity_user = ActivityUser.new(activity_users_params)
+        if activity_user.save
+            render json: activity_user.to_json(:include => {
+                :activity => {:include => [:category]}
+            })
+        else
+            render json: { message: "Error with creating activity"}
+        end
+    end
+
+    private
+
+    def activity_users_params
+        params.require(:activity_users).permit(:activity_id, :user_id, :start_date, :end_date)
     end
 end
