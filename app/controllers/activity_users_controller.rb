@@ -13,9 +13,6 @@ class ActivityUsersController < ApplicationController
         end
     end
 
-    def show
-    end
-
     def create
         activity_user = ActivityUser.new(activity_users_params)
         if activity_user.save

@@ -1,11 +1,5 @@
 class SessionsController < ApplicationController
 
-    # def index
-    #     user = User.find(1)
-    #     render json: user.to_json()
-    # end
-
-
     def create
         # byebug
         if !!params[:user][:email]
