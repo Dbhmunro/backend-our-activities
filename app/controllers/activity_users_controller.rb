@@ -1,8 +1,9 @@
 class ActivityUsersController < ApplicationController
 
     def index
-        if params[:user_id]
-            user_activities = ActivityUser.select { |au| au.user_id == params[:user_id].to_i }
+        if params[:user_id] # needs to check for token and process it
+            # decode token and set user_id = decoded_token[0]['user_id']
+            user_activities = ActivityUser.select { |au| au.user_id == params[:user_id].to_i } 
             # render json: user_activities.to_json(include: [:activity])
             render json: user_activities.to_json(:include => {
                 :activity => {:include => [:category]}
@@ -27,6 +28,6 @@ class ActivityUsersController < ApplicationController
     private
 
     def activity_users_params
-        params.require(:activity_users).permit(:activity_id, :user_id, :start_date, :end_date)
+        params.require(:activity_users).permit(:activity_id, :user_id, :start_date, :end_date) #will probably be token instead of userId
     end
 end
