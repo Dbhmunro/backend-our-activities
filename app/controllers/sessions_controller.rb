@@ -6,18 +6,19 @@ class SessionsController < ApplicationController
             user = User.find_by(email: params[:user][:email])
             if !!user
                 if user.authenticate(params[:user][:password])
-                    #need to generate token here
-                    render json: user.to_json() #need to render user and token here
+                    token = encode_token({user_id: user.id})
+                    render json: {user: user, token: token}
                 else
                     render json: { message: "Invalid login, please try again"}
                 end
             else
                 render json: { message: "User not found, please try again"}
             end
-        elsif !!params[:user][:id] #will be recieving token here
+        elsif !!params[:user][:id] #will likely be recieving token here and need to decode it for userId
             user = User.find_by(id: params[:user][:id])
-            render json: user.to_json() #need to render user and token here
-            #would be good to add conditional in case token is no longer valid so that the token can be deleted from localstorage
+            token = encode_token({user_id: user.id})
+            render json: {user: user, token: token}
+            #would be good to add conditional in case token is no longer valid, so that the token can be deleted from localstorage
         end
 
     end
